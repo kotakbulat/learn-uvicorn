@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>WebSocket Echo Demo</h2>
+<p>Enter a message below and click "Send". The server (via Uvicorn/FastAPI) will echo it back.</p>
+<ul id="messages"></ul>
+<input type="text" id="messageText" autocomplete="off"/>
+<button onclick="sendMessage()">Send</button>
+<p>Status: <span id="status">Connecting...</span></p>
+
+<script>
+    const wsScheme = window.location.protocol === "https:" ? "wss" : "ws";
+    const wsUrl = `${wsScheme}://${window.location.host}/ws`;
+    let websocket;
+    const messages = document.getElementById('messages');
+    const messageText = document.getElementById('messageText');
+    const status = document.getElementById('status');
+
+    function connectWebSocket() {
+        websocket = new WebSocket(wsUrl);
+
+        websocket.onopen = function(event) {
+            console.log("WebSocket connection opened");
+            status.textContent = "Connected";
+            addMessage("System", "Connected to WebSocket!");
+        };
+
+        websocket.onmessage = function(event) {
+            console.log("Message from server: ", event.data);
+            addMessage("Server", event.data);
+        };
+
+        websocket.onerror = function(event) {
+            console.error("WebSocket error observed:", event);
+            status.textContent = "Error";
+            addMessage("System", "WebSocket error occurred.");
+        };
+
+        websocket.onclose = function(event) {
+            console.log("WebSocket connection closed:", event.reason, event.code);
+            status.textContent = "Disconnected. Attempting to reconnect...";
+            addMessage("System", `WebSocket closed: ${event.reason || 'No reason given'}`);
+            // Try to reconnect after a delay
+            setTimeout(connectWebSocket, 5000);
+        };
+    }
+
+    function sendMessage() {
+        if (websocket && websocket.readyState === WebSocket.OPEN) {
+            const message = messageText.value;
+            if (message.trim() !== "") {
+                websocket.send(message);
+                addMessage("You", message);
+                messageText.value = '';
+            }
+        } else {
+             addMessage("System", "WebSocket is not connected.");
+        }
+         messageText.focus();
+    }
+
+    function addMessage(sender, text) {
+        const li = document.createElement("li");
+        li.innerHTML = `<strong>${sender}:</strong> ${text}`;
+        messages.appendChild(li);
+        // Scroll to bottom
+        messages.scrollTop = messages.scrollHeight;
+    }
+
+    // Allow sending message with Enter key
+    messageText.addEventListener("keypress", function(event) {
+        if (event.key === "Enter") {
+            event.preventDefault(); // Prevent default form submission if it were in a form
+            sendMessage();
+        }
+    });
+
+    // Initial connection attempt
+    connectWebSocket();
+
+</script>
+{% endblock %}
