@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Uvicorn Essential Features</h2>
+<p>This application, served by Uvicorn, demonstrates or allows you to test the following features:</p>
+<ul>
+    <li>
+        <strong>ASGI Server Compliance:</strong>
+        <div class="feature-desc">Uvicorn is running this FastAPI (an ASGI framework) application. This is its core function. You are interacting with it right now!</div>
+    </li>
+    <li>
+        <strong>High Performance:</strong>
+        <div class="feature-desc">Uvicorn uses libraries like <code>httptools</code> for fast HTTP parsing. On Linux/macOS, it can use <code>uvloop</code> for an even faster event loop. FastAPI itself is also very fast. While not directly visible, the responsiveness comes from this foundation.</div>
+    </li>
+    <li>
+        <strong>HTTP/1.1 Support:</strong>
+        <div class="feature-desc">Your browser is likely communicating with Uvicorn over HTTP/1.1 right now. You can verify this using your browser's Developer Tools (Network tab).</div>
+    </li>
+    <li>
+        <strong>WebSocket Support:</strong>
+        <div class="feature-desc">Uvicorn handles WebSocket connections. <a href="/websocket_demo">Go to the WebSocket Demo page</a> to interact with a live example.</div>
+    </li>
+    <li>
+        <strong>Hot Reloading (Development):</strong>
+        <div class="feature-desc">Stop the server and restart it with the <code>--reload</code> flag: <code>uvicorn main:app --reload</code>. Now, try editing <code>main.py</code> (e.g., change the welcome message) and save the file. Uvicorn will automatically detect the change and restart the server. Refresh your browser to see the update. (Note: <code>--reload</code> is for development, not production).</div>
+    </li>
+     <li>
+        <strong>Logging:</strong>
+        <div class="feature-desc">Look at the terminal where you started Uvicorn. You'll see access logs (like <code>INFO: 127.0.0.1:xxxx - "GET /features HTTP/1.1" 200 OK</code>) and potentially error messages. Uvicorn provides configurable logging.</div>
+    </li>
+    <li>
+        <strong>HTTPS/SSL Support:</strong>
+        <div class="feature-desc">Uvicorn can serve your application over HTTPS. You need SSL certificate files (e.g., <code>key.pem</code>, <code>cert.pem</code>). You can generate self-signed ones for testing (see instructions below). Then run Uvicorn with: <br><code>uvicorn main:app --ssl-keyfile key.pem --ssl-certfile cert.pem</code><br>Your browser will likely warn you about self-signed certificates, but it demonstrates the capability.</div>
+    </li>
+     <li>
+        <strong>HTTP/2 Support:</strong>
+        <div class="feature-desc">Requires HTTPS and the <code>h2</code> library (install with <code>pip install h2</code>). Run Uvicorn with SSL flags *and* the <code>--http h2</code> flag:<br><code>uvicorn main:app --ssl-keyfile key.pem --ssl-certfile cert.pem --http h2</code><br>You can verify HTTP/2 usage in your browser's Developer Tools (Network tab, check the 'Protocol' column).</div>
+    </li>
+     <li>
+        <strong>Multiple Workers (Production):</strong>
+        <div class="feature-desc">For production deployment (usually on Linux/macOS), you can run multiple Uvicorn worker processes to handle more concurrent requests using the <code>--workers</code> flag: <br><code>uvicorn main:app --workers 4 --host 0.0.0.0 --port 8000</code><br> (Note: Cannot be used with <code>--reload</code>). This improves concurrency and resilience.</div>
+    </li>
+
+
+</ul>
+
+<h3>Generating Self-Signed Certificates (for testing HTTPS/HTTP2)</h3>
+<p>You can use OpenSSL (often available with Git for Windows or installable separately) to create test certificates:</p>
+<pre><code>openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -sha256 -days 365 -nodes -subj "/CN=localhost"</code></pre>
+<p>This command creates <code>key.pem</code> and <code>cert.pem</code> in your current directory, valid for 365 days for `localhost`.</p>
+{% endblock %}
