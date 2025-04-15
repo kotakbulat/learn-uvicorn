@@ -1,0 +1,18 @@
+# Ignore virtual environment folder
+venv/
+
+# Ignore Python bytecode cache
+__pycache__/
+
+# Compiled Python files
+*.pyc
+*.pyo
+*.pyd
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+
+# VS Code config (if you're using it)
+.vscode/
