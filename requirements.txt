@@ -1,0 +1,6 @@
+# requirements.txt
+fastapi
+uvicorn[standard]  # Includes httptools, websockets, etc.
+jinja2
+python-dotenv     # Optional, good practice
+h2                # For HTTP/2 support (needs to be installed)
