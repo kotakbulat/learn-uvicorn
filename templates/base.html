@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }} - Uvicorn Demo</title>
+    <!-- <link rel="stylesheet" href="/static/style.css"> -->
+    <style>
+        body { font-family: sans-serif; line-height: 1.6; padding: 20px; max-width: 800px; margin: auto; background-color: #f4f4f4; }
+        header { background: #333; color: #fff; padding: 10px 0; text-align: center; margin-bottom: 20px; }
+        nav a { color: #fff; text-decoration: none; margin: 0 15px; }
+        nav a:hover { text-decoration: underline; }
+        .content { background: #fff; padding: 20px; border-radius: 5px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        h1, h2 { color: #333; }
+        code { background-color: #eee; padding: 2px 5px; border-radius: 3px; font-family: monospace; }
+        li { margin-bottom: 10px; }
+        .feature-desc { margin-left: 20px; font-size: 0.9em; color: #555; }
+        #messages { list-style-type: none; padding: 0; margin-bottom: 10px; max-height: 300px; overflow-y: auto; border: 1px solid #ccc; padding: 10px; }
+        #messages li { padding: 5px; border-bottom: 1px dotted #eee; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Uvicorn Features Showcase</h1>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/features">Uvicorn Features</a>
+            <a href="/websocket_demo">WebSocket Demo</a>
+        </nav>
+    </header>
+    <div class="content">
+        {% block content %}
+        {% endblock %}
+    </div>
+    <footer>
+        <p style="text-align:center; margin-top: 20px; font-size: 0.8em; color: #777;">
+            Running on Uvicorn with FastAPI.
+        </p>
+    </footer>
+</body>
+</html>
